@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en"> 
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Midterm Exam</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden;
+            }
+            header {
+                margin-top: 20px;
+            }
+            h1 {
+                padding-top: 30px;
+                font-size: 40px;
+            }
+            h1, h2 {
+                margin: 5px 0;
+            }
+            main {
+                margin-top: 40px;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
+                gap: 10px;
+                max-width: 80vw; 
+                margin: 0 auto;
+            }
+
+            .student-info {
+                display: flex;
+                align-items: center;
+                border: 3px solid gray;
+                padding: 15px;
+                width: 350px;
+                box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+                background-color: #f9f9f9;
+                text-align: left;
+                flex-shrink: 0;
+                flex-grow: 0;
+            }
+            .student-data {
+                flex: 1;
+                font-size: 12px; 
+            }
+            .student-info img {
+                align-self: flex-start;
+                width: 50px;
+                aspect-ratio: 1/1;
+                border-radius: 5px;
+                margin-left: 15px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>ABC Colleges</h1>
+            <h2>Library Users</h2>
+        </header>
+
+        <main>
+            <div class="container" id="student-infos"></div>
+        </main>
+
+        <script>
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    displayUsers(this);
+                }
+            };
+            xhttp.open("GET", "maryallyson_caba.xml", true);
+            xhttp.send();
+            
+            function displayUsers(xml) { 
+                var xmlDoc = xml.responseXML;
+                var users = xmlDoc.getElementsByTagName("student");
+                var output = "";
+            
+                for (var i = 0; i < users.length; i++) {
+                    var picture = users[i].getElementsByTagName("picture")[0].childNodes[0].nodeValue;
+                    var name = users[i].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+                    var course = users[i].getElementsByTagName("course")[0].childNodes[0].nodeValue;
+                    var yearLevel = users[i].getElementsByTagName("yearLevel")[0].childNodes[0].nodeValue;
+                    var adviser = users[i].getElementsByTagName("adviser")[0].childNodes[0].nodeValue;
+                    var schoolYear = users[i].getElementsByTagName("schoolYear")[0].childNodes[0].nodeValue;
+                    
+                    output += "<div class='student-info'>" +
+                                "<div class='student-data'>" +
+                                    "<strong>Name:</strong> " + name + "<br>" +
+                                    "<strong>Course:</strong> " + course + "<br>" +
+                                    "<strong>Year Level / Section:</strong> " + yearLevel + "<br>" +
+                                    "<strong>Adviser:</strong> " + adviser + "<br>" +
+                                    "<strong>School Year:</strong> " + schoolYear + "<br><br>" +
+                                "</div>" +
+                                "<img src='" + picture + "' alt='" + name + "'>" +
+                            "</div>";
+                }
+            
+                document.getElementById("student-infos").innerHTML = output;
+            }
+        </script>
+    </body>
+</html>
